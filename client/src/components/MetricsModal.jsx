@@ -15,7 +15,7 @@ const MetricsModal = ({ isOpen, onClose, metrics }) => {
         : 1;
 
     return (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[1000]">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[3000]">
             <div className="bg-gray-800 border border-gray-600 rounded-xl p-8 w-[600px] max-w-full shadow-2xl">
                 <h2 className="text-2xl font-bold text-white mb-6">Performance Metrics</h2>
 
@@ -42,7 +42,7 @@ const MetricsModal = ({ isOpen, onClose, metrics }) => {
                             <div className="flex-1 h-4 bg-gray-700 rounded-full overflow-hidden">
                                 <div
                                     className={`h-full rounded-full ${item._id === 'High' ? 'bg-red-500' :
-                                            item._id === 'Medium' ? 'bg-yellow-500' : 'bg-blue-500'
+                                        item._id === 'Medium' ? 'bg-orange-500' : 'bg-blue-500'
                                         }`}
                                     style={{ width: `${(item.count / maxCount) * 100}%` }}
                                 ></div>

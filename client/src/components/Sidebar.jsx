@@ -76,7 +76,13 @@ const Sidebar = ({ incidents, onDispatch, onShowMetrics, isOpen, onClose }) => {
 
                                     {incident.status === 'Reported' && (
                                         <button
-                                            onClick={() => onDispatch(incident)}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                onDispatch(incident);
+                                                if (window.innerWidth < 768) {
+                                                    onClose();
+                                                }
+                                            }}
                                             className="w-full py-2 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition-colors shadow-lg shadow-white/10"
                                         >
                                             Dispatch Unit

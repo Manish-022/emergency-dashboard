@@ -9,7 +9,7 @@ const DispatchModal = ({ isOpen, onClose, incident, units, onAssign }) => {
     // Ideally we calculate distance, but let's just show types matching incident type if possible or just all idle.
 
     return (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[1000]">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[3000]">
             <div className="bg-gray-800 border border-gray-600 rounded-xl p-6 w-96 max-w-full shadow-2xl">
                 <h2 className="text-xl font-bold text-white mb-4">Dispatch Unit</h2>
                 <p className="text-gray-400 mb-4 text-sm">Incident: {incident.type} at {incident.description}</p>
