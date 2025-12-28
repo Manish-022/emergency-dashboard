@@ -20,8 +20,11 @@ Since Vercel Serverless functions have limitations with WebSockets (Socket.io), 
     - **Output Directory:** Leave default.
 4.  **Environment Variables:**
     Add the following variables in the Vercel dashboard:
-    - `MONGODB_URI`: Your MongoDB Atlas connection string (ensure IP whitelist allows 0.0.0.0/0 or Vercel IPs).
+    - `MONGODB_URI`: Your MongoDB Atlas connection string.
+        - [Get MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register)
+        - **Important:** Go to *Network Access* in Atlas and add IP `0.0.0.0/0` (Allow Access from Anywhere) so Vercel can connect.
     - `OPENAI_API_KEY`: Your OpenAI API Key.
+        - [Get OpenAI API Key](https://platform.openai.com/api-keys)
 5.  Click **Deploy**.
 6.  **Copy the Domain**: Once deployed, copy the assigned domain (e.g., `https://emergency-dashboard-server.vercel.app`).
 
