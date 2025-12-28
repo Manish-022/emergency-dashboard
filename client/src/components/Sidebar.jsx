@@ -34,7 +34,10 @@ const Sidebar = ({ incidents, onDispatch, onShowMetrics, isOpen, onClose }) => {
                     <h2 className="text-2xl font-bold text-white tracking-tight">Active Incidents</h2>
                     <div className="flex gap-2">
                         <button
-                            onClick={onShowMetrics}
+                            onClick={() => {
+                                onShowMetrics();
+                                onClose();
+                            }}
                             className="p-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-xs font-bold uppercase tracking-wider text-gray-300"
                         >
                             Metrics
