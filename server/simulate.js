@@ -1,6 +1,7 @@
 const axios = require('axios');
 
-const BACKEND_URL = 'http://localhost:5000/api';
+const PORT = process.env.PORT || 5000;
+const BACKEND_URL = `http://localhost:${PORT}/api`;
 
 const DESCRIPTIONS = [
     "Fire reported in residential building",
@@ -74,9 +75,9 @@ async function start() {
     console.log("Initializing Units...");
     await initUnits();
 
-    console.log("Starting Incident Simulation (Ctrl+C to stop)...");
+    console.log("Starting Incident Simulation...");
     createIncident();
     setInterval(createIncident, 10000); // New incident every 10 seconds
 }
 
-start();
+module.exports = { start };
