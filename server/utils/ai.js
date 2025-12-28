@@ -6,7 +6,7 @@ const openai = new OpenAI({
 
 async function classifyIncident(description) {
     if (!process.env.OPENAI_API_KEY) {
-        console.warn('OpenAI API Key not missing. Using mock classification.');
+        console.warn('OpenAI API Key missing. Using mock classification.');
         const severities = ['Low', 'Medium', 'High'];
         const types = ['Medical', 'Fire', 'Police', 'Traffic'];
         return {

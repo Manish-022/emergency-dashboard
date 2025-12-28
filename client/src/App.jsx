@@ -6,7 +6,7 @@ import DispatchModal from './components/DispatchModal';
 import MetricsModal from './components/MetricsModal';
 
 // Set base URL for axios
-axios.defaults.baseURL = 'http://localhost:5000/api';
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 function App() {
   const [incidents, setIncidents] = useState([]);
