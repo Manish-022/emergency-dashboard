@@ -41,10 +41,17 @@ async function createIncident() {
             description: getRandomDescription(),
             location: getRandomLocation()
         };
+        console.log(`[Sim] Attempting to create incident at ${BACKEND_URL}/incidents`);
         const res = await axios.post(`${BACKEND_URL}/incidents`, incident);
         console.log('Created Incident:', res.data.type, res.data.sensitivity || res.data.severity);
     } catch (err) {
-        console.error('Error creating incident:', err.message);
+        console.error('[Sim] Error creating incident:', err.message);
+        if (err.response) {
+            console.error('[Sim] Response status:', err.response.status);
+            console.error('[Sim] Response data:', err.response.data);
+        } else if (err.code === 'ECONNREFUSED') {
+            console.error('[Sim] Connection refused! Is the server running?');
+        }
     }
 }
 
@@ -60,6 +67,7 @@ async function initUnits() {
 
     for (const u of units) {
         try {
+            console.log(`[Sim] Creating unit ${u.name}...`);
             await axios.post(`${BACKEND_URL}/units`, {
                 ...u,
                 location: getRandomLocation()
@@ -72,10 +80,13 @@ async function initUnits() {
 }
 
 async function start() {
-    console.log("Initializing Units...");
+    console.log("[Sim] Waiting 5 seconds for server to be ready...");
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
+    console.log("[Sim] Initializing Units...");
     await initUnits();
 
-    console.log("Starting Incident Simulation...");
+    console.log("[Sim] Starting Incident Simulation loop...");
     createIncident();
     setInterval(createIncident, 10000); // New incident every 10 seconds
 }
