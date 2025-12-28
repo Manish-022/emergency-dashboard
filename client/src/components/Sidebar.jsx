@@ -6,7 +6,7 @@ const Sidebar = ({ incidents, onDispatch, onShowMetrics, isOpen, onClose }) => {
         const s = severity ? severity.toLowerCase() : '';
         if (s === 'high') return 'bg-red-600 text-white border-4 border-red-400';
         if (s === 'medium') return 'bg-orange-600 text-white border-4 border-orange-400';
-        if (s === 'low') return 'bg-blue-600 text-white border-4 border-blue-400';
+        if (s === 'low') return 'bg-sky-600 text-white border-4 border-sky-400';
 
         return 'bg-gray-700 text-gray-300 border-4 border-gray-500';
     };

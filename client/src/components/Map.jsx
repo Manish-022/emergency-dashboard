@@ -34,7 +34,7 @@ const getSeverityColor = (severity) => {
     switch (s) {
         case 'high': return 'red';
         case 'medium': return 'orange';
-        case 'low': return 'blue';
+        case 'low': return 'cyan';
         default: return 'blue';
     }
 }
