@@ -1,45 +1,51 @@
 # Deployment Guide
 
-This guide describes how to deploy the Emergency Response Coordination Dashboard explicitly on Vercel.
+This guide describes how to deploy the Emergency Response Coordination Dashboard.
+**Architecture:**
+- **Frontend**: Deployed on **Vercel** (Static Site / SPA).
+- **Backend**: Deployed on **Render** (Web Service) to support long-running processes (Socket.io).
 
 ## Prerequisites
-- A [Vercel](https://vercel.com) account.
-- GitHub repository connected to Vercel.
+- GitHub repository connected to both Vercel and Render.
+- Accounts on [Vercel](https://vercel.com) and [Render](https://render.com).
 
-## 1. Backend Deployment (Server)
+## 1. Backend Deployment (Render)
 
-Since Vercel Serverless functions have limitations with WebSockets (Socket.io), this configuration sets up the Express app as a serverless function. **Note:** Real-time features might be less reliable than on a VPS or container service (like Render/Railway).
+We use Render for the backend because it supports persistent connections required for real-time features.
 
-1.  Log in to Vercel and click **"Add New..."** -> **"Project"**.
-2.  Import your `emergency-dashboard` repository.
-3.  **Configure Project:**
-    - **Project Name:** `emergency-dashboard-server` (or similar)
-    - **Root Directory:** Edit execution directory to `server`.
-    - **Framework Preset:** Select "Other".
-    - **Build Command:** `npm install` (or leave default if it detects package.json).
-    - **Output Directory:** Leave default.
+1.  Log in to [Render](https://dashboard.render.com/) and click **"New +"** -> **"Web Service"**.
+2.  Connect your `emergency-dashboard` repository.
+3.  **Configure Service:**
+    - **Name:** `emergency-dashboard-server`
+    - **Root Directory:** `server` (Important!)
+    - **Environment:** `Node`
+    - **Build Command:** `npm install`
+    - **Start Command:** `npm start`
+    - **Plan:** Free (or as needed)
 4.  **Environment Variables:**
-    Add the following variables in the Vercel dashboard:
+    Scroll down to "Environment Variables" and add:
     - `MONGODB_URI`: Your MongoDB Atlas connection string.
         - [Get MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register)
-        - **Important:** Go to *Network Access* in Atlas and add IP `0.0.0.0/0` (Allow Access from Anywhere) so Vercel can connect.
+        - **Important:** Whitelist IP `0.0.0.0/0` in Atlas Network Access.
     - `OPENAI_API_KEY`: Your OpenAI API Key.
         - [Get OpenAI API Key](https://platform.openai.com/api-keys)
-5.  Click **Deploy**.
-6.  **Copy the Domain**: Once deployed, copy the assigned domain (e.g., `https://emergency-dashboard-server.vercel.app`).
+    - `PORT`: `10000` (Render default) or `5000` (Optional, Render assigns one automatically).
+5.  Click **Create Web Service**.
+6.  **Copy the URL**: Once deployed, copy the service URL (e.g., `https://emergency-dashboard-server.onrender.com`).
 
-## 2. Frontend Deployment (Client)
+## 2. Frontend Deployment (Vercel)
 
-1.  Go back to Vercel Dashboard and click **"Add New..."** -> **"Project"**.
-2.  Import the **same** `emergency-dashboard` repository again.
+1.  Log in to [Vercel](https://vercel.com) and click **"Add New..."** -> **"Project"**.
+2.  Import the **same** `emergency-dashboard` repository.
 3.  **Configure Project:**
     - **Project Name:** `emergency-dashboard-client`
     - **Root Directory:** Edit execution directory to `client`.
     - **Framework Preset:** Vite (should Auto-detect).
 4.  **Environment Variables:**
-    - `VITE_API_URL`: Paste the backend URL from step 1 (e.g., `https://emergency-dashboard-server.vercel.app/api`).
+    - `VITE_API_URL`: Paste the **Render Backend URL** from Step 1 (e.g., `https://emergency-dashboard-server.onrender.com/api`).
+      *Note: Ensure you include `/api` at the end if your backend routes are prefixed with it.*
 5.  Click **Deploy**.
 
 ## Troubleshooting
-- **CORS Issues**: If the frontend cannot talk to the backend, ensure the backend `cors` configuration allows the frontend domain. You might need to update `server/index.js` to explicitly allow the Vercel frontend domain if default `cors()` (wildcard) is restrictive in production (though usually wildcard works for public APIs).
-- **Socket.io**: If real-time updates fail, consider deploying the server to **Render** or **Railway** which support long-running processes, instead of Vercel Serverless.
+- **CORS Issues**: If the frontend cannot talk to the backend, check the browser console. You may need to verify the Render backend is running and the URL in Vercel is correct (handling `https`).
+- **Socket Connection**: If the map/incidents don't update in real-time, ensure the backend is not sleeping (Render Free tier spins down after inactivity) and that the socket client is using the same `VITE_API_URL`.
