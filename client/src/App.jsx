@@ -17,7 +17,25 @@ function App() {
   const [isMetricsOpen, setIsMetricsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // ... (keep fetchData and useEffect)
+  const fetchData = async () => {
+    try {
+      const [incidentsRes, unitsRes] = await Promise.all([
+        axios.get('/incidents'),
+        axios.get('/units')
+      ]);
+      setIncidents(incidentsRes.data);
+      setUnits(unitsRes.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    // Connect to socket for real-time updates (optional, using polling for now to be safe)
+    const interval = setInterval(fetchData, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleOpenDispatch = (incident) => {
     setSelectedIncident(incident);
