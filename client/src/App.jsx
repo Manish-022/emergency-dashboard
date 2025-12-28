@@ -17,6 +17,32 @@ function App() {
   const [isMetricsOpen, setIsMetricsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  const generateMetrics = (incidentsData) => {
+    const total = incidentsData.length;
+    const resolved = incidentsData.filter(i => i.status === 'Resolved').length;
+
+    // Calculate severity counts
+    const severityCounts = incidentsData.reduce((acc, curr) => {
+      acc[curr.severity] = (acc[curr.severity] || 0) + 1;
+      return acc;
+    }, {});
+
+    const incidentsBySeverity = Object.keys(severityCounts).map(key => ({
+      _id: key,
+      count: severityCounts[key]
+    }));
+
+    // Mock response time for now (random between 5-15 mins)
+    const averageResponseTime = 1000 * 60 * (5 + Math.random() * 10);
+
+    return {
+      totalIncidents: total,
+      resolvedIncidents: resolved,
+      averageResponseTime,
+      incidentsBySeverity
+    };
+  };
+
   const fetchData = async () => {
     try {
       const [incidentsRes, unitsRes] = await Promise.all([
@@ -25,6 +51,7 @@ function App() {
       ]);
       setIncidents(incidentsRes.data);
       setUnits(unitsRes.data);
+      setMetrics(generateMetrics(incidentsRes.data));
     } catch (error) {
       console.error('Error fetching data:', error);
     }
