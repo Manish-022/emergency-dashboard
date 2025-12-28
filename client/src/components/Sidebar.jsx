@@ -22,7 +22,7 @@ const Sidebar = ({ incidents, onDispatch, onShowMetrics, isOpen, onClose }) => {
             )}
 
             <div className={`
-                fixed md:relative inset-y-0 left-0 z-40
+                fixed md:relative inset-y-0 left-0 z-[2000]
                 w-80 md:w-96
                 bg-gray-900/95 backdrop-blur-md 
                 border-r border-gray-700

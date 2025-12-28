@@ -86,7 +86,7 @@ function App() {
       {/* Mobile Menu Button - Only visible on small screens */}
       <button
         onClick={() => setIsSidebarOpen(true)}
-        className="md:hidden absolute top-4 left-4 z-10 p-2 bg-gray-900/90 rounded-lg text-white shadow-lg border border-gray-700"
+        className="md:hidden fixed top-4 left-4 z-[1500] p-2 bg-gray-900/90 rounded-lg text-white shadow-lg border border-gray-700"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
